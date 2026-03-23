@@ -1,0 +1,6 @@
+dotenv
+express
+cors
+prisma
+@prisma/client
+pg
