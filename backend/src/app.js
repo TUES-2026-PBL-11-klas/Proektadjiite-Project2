@@ -1,5 +1,9 @@
-const express = require('express');
-const cors = require('cors');
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import routes from './routes.js';
+
+dotenv.config();
 
 const app = express();
 
@@ -11,7 +15,7 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-app.use('/api', require('./routes'));
+app.use('/api', routes);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Not found' });
@@ -22,4 +26,4 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
-module.exports = app;
+export default app;
