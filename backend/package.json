@@ -6,7 +6,10 @@
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "postman:test": "newman run postman/UrbanPulse.postman_collection.json -e postman/UrbanPulse.local.postman_environment.json"
   },
   "dependencies": {
     "@prisma/client": "^5.0.0",
@@ -19,6 +22,9 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.1",
-    "prisma": "^5.0.0"
+    "prisma": "^5.0.0",
+    "newman": "^6.2.1",
+    "supertest": "^7.1.1",
+    "vitest": "^3.2.4"
   }
 }
