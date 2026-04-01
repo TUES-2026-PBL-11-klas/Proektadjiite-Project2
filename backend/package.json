@@ -6,16 +6,25 @@
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "postman:test": "newman run postman/UrbanPulse.postman_collection.json -e postman/UrbanPulse.local.postman_environment.json"
   },
   "dependencies": {
     "@prisma/client": "^5.0.0",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "cors": "^2.8.5"
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.1.1"
   },
   "devDependencies": {
+    "nodemon": "^3.0.1",
     "prisma": "^5.0.0",
-    "nodemon": "^3.0.1"
+    "newman": "^6.2.1",
+    "supertest": "^7.1.1",
+    "vitest": "^3.2.4"
   }
 }
