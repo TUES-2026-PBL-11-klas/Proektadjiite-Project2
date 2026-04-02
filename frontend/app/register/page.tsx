@@ -2,17 +2,22 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Activity, Mail, Lock, Eye, EyeOff, ArrowRight, User, Check, Award, TrendingUp, Users } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { cn } from '@/lib/utils'
+import { useAuth } from '@/context/auth-context'
 
 export default function RegisterPage() {
+  const { register } = useAuth()
+  const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [agreedToTerms, setAgreedToTerms] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
@@ -40,9 +45,16 @@ export default function RegisterPage() {
     if (formData.password !== formData.confirmPassword) {
       return
     }
+    setError(null)
     setIsLoading(true)
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    setIsLoading(false)
+    try {
+      await register(formData.email, formData.password, formData.name)
+      router.push('/')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Грешка при регистрация')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -164,6 +176,11 @@ export default function RegisterPage() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
+            {error && (
+              <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-sm text-destructive">
+                {error}
+              </div>
+            )}
             <div className="space-y-2">
               <Label htmlFor="name">Пълно име</Label>
               <div className="relative">

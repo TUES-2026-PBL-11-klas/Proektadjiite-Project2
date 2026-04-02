@@ -68,7 +68,7 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
 
   return (
     <div className="min-h-screen bg-surface">
-      <Navbar user={null} />
+      <Navbar />
       
       {/* Hero Image */}
       <div className="relative h-72 sm:h-96 lg:h-[450px] bg-dark-surface overflow-hidden">

@@ -79,12 +79,9 @@ export default function HomePage() {
     return true;
   });
 
-  // Set user to null to show guest view, or mockCurrentUser for logged in view
-  const currentUser = null; // Change to mockCurrentUser for logged in demo
-
   return (
     <div className="h-screen flex flex-col bg-surface">
-      <Navbar user={currentUser} />
+      <Navbar />
 
       <main className="flex-1 flex pt-16 overflow-hidden">
         {/* Desktop Sidebar */}

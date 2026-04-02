@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { type User as UserType, mockCurrentUser } from '@/lib/mock-data'
 import { LevelBadge } from './level-badge'
+import { useAuth } from '@/context/auth-context'
 
 interface NavbarProps {
   user?: UserType | null
@@ -21,7 +22,9 @@ interface NavbarProps {
   className?: string
 }
 
-export function Navbar({ user = null, transparent = false, className }: NavbarProps) {
+export function Navbar({ user, transparent = false, className }: NavbarProps) {
+  const { user: contextUser, logout } = useAuth()
+  const effectiveUser = user !== undefined ? user : contextUser
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
@@ -64,9 +67,9 @@ export function Navbar({ user = null, transparent = false, className }: NavbarPr
 
           {/* Desktop Auth / User Menu */}
           <div className="hidden md:flex items-center justify-self-end gap-2">
-            {user ? (
+            {effectiveUser ? (
               <>
-                {user.role === 'admin' && (
+                {effectiveUser.role === 'admin' && (
                   <Link href="/admin">
                     <Button
                       variant="ghost"
@@ -89,24 +92,24 @@ export function Navbar({ user = null, transparent = false, className }: NavbarPr
                   <DropdownMenuTrigger asChild>
                     <button className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl bg-white/8 hover:bg-white/14 border border-white/10 hover:border-white/20 transition-all">
                       <div className="w-7 h-7 rounded-lg bg-forest flex items-center justify-center text-white font-medium text-xs">
-                        {user.displayName.charAt(0)}
+                        {effectiveUser.displayName.charAt(0)}
                       </div>
                       <div className="text-left hidden lg:block">
                         <p className="text-xs font-medium text-white leading-tight">
-                          {user.displayName}
+                          {effectiveUser.displayName}
                         </p>
                         <p className="text-[11px] text-lime leading-tight">
-                          {user.points} точки
+                          {effectiveUser.points} точки
                         </p>
                       </div>
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-56">
                     <div className="px-3 py-2">
-                      <p className="text-sm font-medium">{user.displayName}</p>
-                      <p className="text-xs text-muted-foreground">{user.email}</p>
+                      <p className="text-sm font-medium">{effectiveUser.displayName}</p>
+                      <p className="text-xs text-muted-foreground">{effectiveUser.email}</p>
                       <div className="mt-2">
-                        <LevelBadge level={user.level} size="sm" />
+                        <LevelBadge level={effectiveUser.level} size="sm" />
                       </div>
                     </div>
                     <DropdownMenuSeparator />
@@ -123,7 +126,7 @@ export function Navbar({ user = null, transparent = false, className }: NavbarPr
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="text-destructive cursor-pointer">
+                    <DropdownMenuItem className="text-destructive cursor-pointer" onClick={logout}>
                       <LogOut size={16} className="mr-2" />
                       Изход
                     </DropdownMenuItem>
@@ -179,26 +182,26 @@ export function Navbar({ user = null, transparent = false, className }: NavbarPr
             </Link>
             
             <div className="pt-3 border-t border-white/10 space-y-3">
-              {user ? (
+              {effectiveUser ? (
                 <>
                   <div className="flex items-center gap-3 py-2">
                     <div className="w-10 h-10 rounded-full bg-forest flex items-center justify-center text-white font-medium">
-                      {user.displayName.charAt(0)}
+                      {effectiveUser.displayName.charAt(0)}
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-white">{user.displayName}</p>
-                      <p className="text-xs text-lime">{user.points} точки</p>
+                      <p className="text-sm font-medium text-white">{effectiveUser.displayName}</p>
+                      <p className="text-xs text-lime">{effectiveUser.points} точки</p>
                     </div>
                   </div>
-                  <Link 
+                  <Link
                     href="/profile"
                     className="block py-2 text-white/80 hover:text-lime transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Моят профил
                   </Link>
-                  {user.role === 'admin' && (
-                    <Link 
+                  {effectiveUser.role === 'admin' && (
+                    <Link
                       href="/admin"
                       className="block py-2 text-white/80 hover:text-lime transition-colors"
                       onClick={() => setMobileMenuOpen(false)}

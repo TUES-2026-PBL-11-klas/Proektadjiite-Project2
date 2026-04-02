@@ -56,7 +56,7 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-surface">
-      <Navbar user={user} />
+      <Navbar />
       
       <main className="max-w-6xl mx-auto px-4 pt-24 pb-12">
         <div className="grid lg:grid-cols-3 gap-8">
